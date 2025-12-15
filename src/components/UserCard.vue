@@ -1,90 +1,65 @@
 <template>
-  <div class="demo-container">
-    <h2>Пример 4: Компоненты и пропсы</h2>
+  <div class="user-card" :class="user.role">
+    <h3>{{ user.name }}</h3>
+    <p>Email: {{ user.email }}</p>
+    <p>Роль: {{ user.role }}</p>
+    <p>Статус: {{ isActive ? 'Активен' : 'Неактивен' }}</p>
     
-    <h3>Список пользователей</h3>
+    <!-- Слот для дополнительного контента -->
+    <slot name="actions"></slot>
     
-    <!-- Передаем данные через пропсы -->
-    <UserCard
-      :user="adminUser"
-      :is-active="true"
-      @user-clicked="handleUserClick"
-    >
-      <!-- Именованный слот -->
-      <template #actions>
-        <button @click="editUser(adminUser)" class="edit-btn">Редактировать</button>
-      </template>
-      
-      <!-- Слот по умолчанию -->
-      <p>Администратор системы</p>
-    </UserCard>
-    
-    <UserCard
-      v-for="user in users"
-      :key="user.id"
-      :user="user"
-      @user-clicked="handleUserClick"
-    />
+    <!-- Слот по умолчанию -->
+    <slot>
+      <p>Нет дополнительной информации</p>
+    </slot>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import UserCard from './UserCard.vue'
-
-const adminUser = ref({
-  id: 1,
-  name: 'Анна Иванова',
-  email: 'anna@example.com',
-  role: 'admin'
+const props = defineProps({
+  user: {
+    type: Object,
+    required: true,
+    validator: (value) => {
+      return value.name && value.email
+    }
+  },
+  isActive: {
+    type: Boolean,
+    default: false
+  }
 })
 
-const users = ref([
-  {
-    id: 2,
-    name: 'Петр Сидоров',
-    email: 'petr@example.com',
-    role: 'user'
-  },
-  {
-    id: 3,
-    name: 'Мария Петрова',
-    email: 'maria@example.com',
-    role: 'user'
-  },
-  {
-    id: 4,
-    name: 'Иван Кузнецов',
-    email: 'ivan@example.com',
-    role: 'user'
-  }
-])
+const emit = defineEmits(['user-clicked'])
 
-const handleUserClick = (user) => {
-  console.log('Клик по пользователю:', user)
-  alert(`Вы кликнули на: ${user.name}`)
-}
-
-const editUser = (user) => {
-  console.log('Редактирование:', user)
-  alert(`Редактирование пользователя: ${user.name}`)
+const handleClick = () => {
+  emit('user-clicked', props.user)
 }
 </script>
 
 <style scoped>
-.demo-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+.user-card {
+  border: 1px solid #ddd;
+  padding: 16px;
+  margin: 10px;
+  border-radius: 8px;
+  max-width: 300px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.edit-btn {
-  padding: 5px 15px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 10px;
+.user-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.user-card.admin {
+  border-color: #ff6b6b;
+  background-color: #fff5f5;
+}
+
+.user-card.user {
+  border-color: #4ecdc4;
+  background-color: #f0fff4;
 }
 </style>

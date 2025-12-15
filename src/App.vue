@@ -33,21 +33,7 @@
         :class="{ active: currentDemo === 'usercards' }"
         class="nav-button"
       >
-        Пример 4: Компоненты и пропсы
-      </button>
-      <button
-        @click="currentDemo = 'searchexample'"
-        :class="{ active: currentDemo === 'searchexample' }"
-        class="nav-button"
-      >
-        Пример 5: Поиск и v-model
-      </button>
-      <button
-        @click="currentDemo = 'router'"
-        :class="{ active: currentDemo === 'router' }"
-        class="nav-button"
-      >
-        Пример 6: Vue Router
+        Пример 4: Компоненты
       </button>
       <button
         @click="currentDemo = 'palette'"
@@ -72,12 +58,6 @@
       <!-- Компонент UserCards -->
       <UserCards v-else-if="currentDemo === 'usercards'" />
 
-      <!-- Компонент SearchExample -->
-      <SearchExample v-else-if="currentDemo === 'searchexample'" />
-
-      <!-- Компонент RouterExample -->
-      <RouterExample v-else-if="currentDemo === 'router'" />
-
       <!-- Компонент PaletteGenerator -->
       <PaletteGenerator v-else-if="currentDemo === 'palette'" />
 
@@ -100,8 +80,6 @@ import ReactiveDemo from './components/ReactiveDemo.vue'
 import ConditionalListDemo from './components/ConditionalListDemo.vue'
 import EventComputedDemo from './components/EventComputedDemo.vue'
 import UserCards from './components/UserCards.vue'
-import SearchExample from './components/SearchExample.vue'
-import RouterExample from './components/RouterExample.vue'
 import PaletteGenerator from './components/PaletteGenerator.vue'
 
 const currentDemo = ref('reactive')
